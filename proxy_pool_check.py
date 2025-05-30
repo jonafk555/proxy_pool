@@ -173,14 +173,14 @@ def main():
                         help="用於驗證代理的 URL。\n預設: http://icanhazip.com")
     parser.add_argument('-w', '--workers', type=int, default=20,
                         help="並行驗證代理的執行緒數量。\n預設: 20")
-    parser.add_argument('-c', '--conf', default='/etc/proxychains.conf',
-                        help="proxychains 設定檔路徑。\n預設: /etc/proxychains.conf")
+    parser.add_argument('-c', '--conf', default='/etc/proxychains4.conf',
+                        help="proxychains 設定檔路徑。\n預設: /etc/proxychains4.conf")
     parser.add_argument('-s', '--sleep', type=int, default=60,
                         help="代理切換間隔時間 (秒)。\n預設: 60")
     parser.add_argument('--proxy-type', default='http', choices=['http', 'socks4', 'socks5', 'https'],
                         help="要設定到 proxychains 的代理類型。\n預設: http")
     parser.add_argument('--no-update', action='store_true',
-                        help="僅驗證代理並匯出 (如果指定了 -o)，不更新 proxychains.conf。")
+                        help="僅驗證代理並匯出 (如果指定了 -o)，不更新 proxychains4.conf。")
     parser.add_argument('--verbose', '-v', action='store_true',
                         help="啟用 DEBUG 等級日誌輸出。")
 
@@ -223,7 +223,7 @@ def main():
     elif not valid_proxies:
         logging.info("沒有可用的代理可以操作。")
         if not args.no_update: # 如果需要更新 proxychains 但無可用代理
-            logging.error("無法更新 proxychains.conf，因為沒有可用的代理。")
+            logging.error("無法更新 proxychains4.conf，因為沒有可用的代理。")
         sys.exit(1) # 如果沒有可用代理，且沒有指定匯出檔案，則退出
 
     if not valid_proxies: # 再次檢查，確保有代理可用於後續操作
