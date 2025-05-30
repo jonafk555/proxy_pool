@@ -116,7 +116,7 @@ def update_proxychains_with_pool(
     # 如果遍歷完畢，策略行仍未被顯式設定（例如原設定檔中沒有對應行）
     if not strategy_set and chain_strategy in known_strategies:
         # 嘗試在檔案開頭附近插入策略（這是一個簡化處理，理想位置可能更複雜）
-        # 或者，更好的做法是要求 `proxychains.conf` 至少包含被註解的策略行
+        # 或者，更好的做法是要求 `proxychains4.conf` 至少包含被註解的策略行
         logging.warning(f"選擇的策略 '{chain_strategy}' 在原設定檔中沒有對應的行可以取消註解。將嘗試添加。")
         # 簡單地加到設定檔頂部，通常策略設定在頂部
         new_config_lines.insert(0, f"{chain_strategy}\n")
@@ -166,13 +166,13 @@ def update_proxychains_with_pool(
 # --- 3. 主程式 ---
 def main():
     parser = argparse.ArgumentParser(
-        description="使用已驗證的代理池來設定 proxychains.conf。",
+        description="使用已驗證的代理池來設定 proxychains4.conf。",
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument('-i', '--input-file', required=True,
                         help="包含已驗證代理清單的 TXT 檔案 (每行格式 'ip:port')。")
-    parser.add_argument('-c', '--conf', default='/etc/proxychains.conf',
-                        help="proxychains 設定檔路徑。\n預設: /etc/proxychains.conf")
+    parser.add_argument('-c', '--conf', default='/etc/proxychains4.conf',
+                        help="proxychains 設定檔路徑。\n預設: /etc/proxychains4.conf")
     parser.add_argument('-s', '--strategy', default='random_chain',
                         choices=['random_chain', 'round_robin_chain', 'strict_chain'],
                         help="要啟用的 proxychains 鏈策略。\n預設: random_chain")
@@ -206,7 +206,7 @@ def main():
         logging.error(f"讀取代理清單檔案 {args.input_file} 失敗: {e}。程式終止。")
         sys.exit(1)
 
-    # 更新 proxychains.conf
+    # 更新 proxychains4.conf
     if update_proxychains_with_pool(
         validated_proxies,
         args.conf,
